@@ -2,7 +2,7 @@
 <template>
 
   <div class="chinese">
-    <v-card dark tile height="4000px">
+    <v-card dark tile height="10000px">
         <v-card-title>
           <h1 class="text-h4 blue--text">车辆路径规划数学模型</h1>
           <v-btn
@@ -18,7 +18,7 @@
             <v-divider></v-divider>
             <p class="mt-5 mx-5 single-para">
               <span class="blue-bold">带时间窗</span>的车辆路径规划问题是本专栏所关心的问题。以下将对“时间窗”、路径规划所能决策的东西、路径规划的目的进行简介，具体介绍可参阅Bruce Golden等人的
-              <a href="https://link.springer.com/book/10.1007/978-0-387-77778-8" style="text-decoration: none;border-bottom:1px solid">著作</a>。
+              <a href="https://link.springer.com/book/10.1007/978-0-387-77778-8" class="neat">著作</a>。
               <ul>
                 <li>“时间窗”指客户设定了一个服务的时间区间（如早上9点到10点这个区间），
                   在“<span class="blue-bold">硬时间窗</span>”的要求下，车辆必须要在该时间窗内服务客户;
@@ -58,7 +58,7 @@
 
                 </p>
                 <v-card-title class="caption pb-0 justify-center">
-                  公式显示：由<a href="https://www.mathjax.org/" style="text-decoration: none;border-bottom:1px solid">Mathjax2.7.9</a>提供tex公式的渲染。
+                  公式显示：由<a href="https://www.mathjax.org/" class="neat">Mathjax2.7.9</a>提供tex公式的渲染。
                 </v-card-title>
                 $$
                 \begin{array}{|c l|}
@@ -71,7 +71,7 @@
                 \text{车场、客户的点集，数学形式为} V=\{0^{+},0^{-},1,\dots,|V|\}，\\
                 其中0^{+}表示起点车场，0^{-}为终点车场，其他数字表示客户\\
                 \end{array}\\ 
-                E & 车场、客户两两能形成的弧集，数学形式为 E\subset \{(i,j), i\in V, j\in V, i \neq j\}\\
+                E & 车场、客户两两可以形成的弧集，(i,j)\in E意味着存在一条直接从点i指向点j的弧，i\in V, j\in V, i \neq j\}\\
                 E^{+}(i) & 以点i为起点的弧的集合，数学形式为 E^{+}(i)=\{(i,j)| (i,j) \in E, j\in V\}, i\in V\\
                 E^{-}(j) & 以点j为终点的弧的集合，数学形式为 E^{-}(j)=\{(i,j)| (i,j) \in E, i\in V\}, j\in V\\
 
@@ -97,9 +97,9 @@
                 c_{ij} & \text{从点}i\text{到点}j\text{所需的运输成本（通常用运输距离代替)}，(i, j)\in E\\
                 \tau_{ij} & \text{从点}i\text{到点}j\text{所需的运输时长，其中包含了在点}i\text{进行服务所需的时间}, (i, j)\in E\\
                 \hline
-                \text{决策变量、辅助变量}\\
+                \text{决策变量}\\
                 \hline
-                x_{ij}^{kn} & \text{车辆}k\text{在第}n\text{次运输中，从}i\text{点直接到}j\text{点}, (i, j)\in E, k\in M, n\in N\\
+                x_{ij}^{kn} & 如果\text{车辆}k\text{在第}n\text{次运输中，从}i\text{点直接到}j\text{点},则变量为1,否则为0， (i, j)\in E, k\in M, n\in N\\
                 t_{i}^{kn} & \text{车辆}k\text{在第}n\text{次运输中，到达}i\text{点的时刻}， i\in V, k\in K, n\in N\\
                 \hline
                 \end{array}
@@ -115,18 +115,33 @@
                         <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
                           <span slot="title">为什么车场要设为“起点”和”终点“呢？现实中不就一个车场既是起点又是终点吗？</span>
                           <span slot="body">答：现实中的确是一个车场既是起点又是终点，将这一个车场视作“起点”和“终点”两个车场是为了在构建时间窗约束时不会产生数学上的矛盾。
-                      大家可以在看完下面的数学模型后再来回味这一点，不然可能认为小Qiu在说什么谜语。</span>
+                      大家可以看下面的数学模型来理解这点，不然可能认为小Qiu在说什么谜语。</span>
                         </ExpandCard>
                         </li>
                       
                       <li>
                         <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
-                          <span slot="title">为什么要设复杂的弧集，直接用点集不也能完整地包含全部要素么，小Qiu是故意给大家压力？</span>
-                          <span slot="body">答：不是小Qiu不讲道理-_-，是现实中两个点之间不一定存在直达的线路，为了能描述这种点与点之间稀疏的连接关系，就需要弧集。当然，如果你考虑的问题里，每个点
-                      都与其他点有直达的路径，你纯粹用点集也行。</span>
+                          <span slot="title">为什么用弧集来包含可以有的线路，直接在全部点之间两两相连不也能表示可有的线路吗？这样我就只需要定义点集就行了。</span>
+                      <span slot="body">答：不是小Qiu故作玄虚 @_@，是现实中两个点之间不一定存在直达的线路，为了能等价描述这种点与点之间稀疏的连接关系，就需要额外定义个弧集。当然，如果你考虑的问题里，每个点
+                      都有直达其他所有点的路径，你也可以将全部点两两连接，来表示可有的线路。</span>
                         </ExpandCard>
                       </li>                   
                       
+                      <li>
+                        <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
+                          <span slot="title">可以细说一下弧集\(E\)里，和起点车场和终点车场相关的东西吗？</span>
+                          <span slot="body">答：对于起点车场，它除了能指向客户，还能无条件指向终点车场，但它<span class="blue-bold">不被任何客户、终点车场所指向</span>; 
+                        终点车场截然相反，它除了能<span class="blue-bold">被</span>客户所指向，还能无条件<span class="blue-bold">被</span>起点车场所指向，但<span class="blue-bold">不能指向任何客户和起点车场</span>。这是“起点”和“终点”二字的应有之义，可以用下图来
+                        辅助理解。
+                          <VerticalCenterDiv width="1000px" height="282px" margin_left="-500px" overflow="hidden">
+                            <v-card-title  class="justify-center caption pink"> 
+                              图：简化的连接图 (绘图工具: <a href="http://dreampuf.github.io/GraphvizOnline" class="neat white--text"> Graphviz</a>)
+                            </v-card-title>
+                            <img src="../assets/vrp-edges.svg" alt="弧集简化示意图" width="1000px" height="230px">
+                          </VerticalCenterDiv>
+                          </span>
+                        </ExpandCard>
+                      </li>
                       
                       <li>
                         <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
@@ -201,11 +216,11 @@
                   配合该图来说车辆路径要满足的最低要求。
                 </p>
 
-                <VerticalCenterDiv width="520px" outer_height="320px" inner_height="320px" margin_left="-260px" overflow="scroll">
-                    <v-card-title slot="body" class="justify-center caption pink"> 
-                      图：简化的车辆路径
+                <VerticalCenterDiv width="520px" height="320px" margin_left="-260px" overflow="scroll">
+                    <v-card-title  class="justify-center caption pink"> 
+                      图：简化的车辆路径 (图片来源: <a href="https://docs.abivin.com/docs/abivin-vroute-glossary" class="neat white--text"> abivin</a>)
                     </v-card-title>
-                    <img slot="body" src="../assets/vrp-intro.png" alt="简化的车辆路径" width="509px" height="500px">
+                    <img src="../assets/vrp-intro.png" alt="简化的车辆路径" width="509px" height="500px">
                 </VerticalCenterDiv>
 
                 <p class="mt-5 mx-5 single-para">
@@ -214,19 +229,31 @@
                     <li>
                       <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
                           <span slot="title">每个客户必须被服务一次，但不限定哪辆车来服务。</span>
-                          <span slot="body">答：都是0,因为这两个车场实际上是具有相同空间位置的，所以在它们间运输起来不需要成本和时间。</span>
+                          <span slot="body">
+                            $$
+                              \sum_{k\in M, n\in N, j\in E^{-}(j)} x_{ij}^{kn}=1,  \quad \forall  j\in C\\
+                            $$
+                          </span>
                         </ExpandCard>
                       </li>
                     <li>
                       <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
                           <span slot="title">一辆车的路径，必须是从起点车场出发，最后又必须回到终点车场。（现实中，起点和终点车场通常就是同一个车场）</span>
-                          <span slot="body">答：都是0,因为这两个车场实际上是具有相同空间位置的，所以在它们间运输起来不需要成本和时间。</span>
+                          <span slot="body">
+                            $$
+                              \sum_{j\in E^{+}(0^{+})} x_{0^{+}j}^{kn}=\sum_{i\in E^{-}(0^{-})} x_{i0^{-}}^{kn}=1, \quad \forall k\in M, n\in N
+                            $$
+                          </span>
                         </ExpandCard>
                         </li>
                     <li>
                       <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
-                          <span slot="title">一辆车访问一个点后，必须又从该点离开。（“点”包括客户和起点、终点车场）</span>
-                          <span slot="body">答：都是0,因为这两个车场实际上是具有相同空间位置的，所以在它们间运输起来不需要成本和时间。</span>
+                          <span slot="title">一辆车访问一个客户后，之后必须从该客户离开。</span>
+                          <span slot="body">
+                            $$
+                            \sum_{i\in E^{-}(p)} x_{ip}^{kn}=\sum_{j\in E^{+}(p)} x_{pj}^{kn}, \quad \forall  p\in C, k\in M, n\in N
+                            $$
+                          </span>
                         </ExpandCard>
                         </li>
                   </ul>
@@ -247,23 +274,47 @@
                     </li>
                     <li>
                       <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
-                          <span slot="title">既然将一个车场同时视作“起点”车场和“终点”车场，那这两个车场之间的运输时长和运输成本怎么定义？</span>
-                          <span slot="body">答：都是0,因为这两个车场实际上是具有相同空间位置的，所以在它们间运输起来不需要成本和时间。</span>
-                        </ExpandCard>一辆车开始服务一个客户的时刻，必须在时间窗内。</li>
+                          <span slot="title">一辆车开始服务一个客户的时刻，必须在时间窗内。</span>
+                          <span slot="body">
+                            $$
+                            \begin{align*}
+                            & a_{i} \leq t_{i}^{kn} \leq b_{i}, &\quad \forall i\in C, k\in K, n\in N\\
+                            & t_{i}^{kn}+\tau_{ij}-M(1-x_{ij}^{kn}) \leq t_{j}^{kn}, &\quad \forall (i,j)\in E, k\in K, n\in N\\
+                            & M 是一个很大的常数
+                            \end{align*}
+                            $$
+                            <p class="single-para">
+                              此处的第二行约束是用于描述时间的变化，如果一辆车从\(i点直达j点(也就是x_{ij}^{kn}=1)\)，那么该约束就变成下式，确实符合时刻\(t_{j}^{kn}\)和\(t_{i}^{kn}\)应有的关系。
+                              $$
+                                t_{i}^{kn}+\tau_{ij} \leq t_{j}^{kn}
+                              $$
+                            </p>
+                            <p class="single-para">
+                              如果一辆车并未从\(i点直达j点(也就是x_{ij}^{kn}=0)\)，那么该约束如下所示。由于\(M\)是一个很大的常数，那么该约束恒成立，从而不会约束时刻\(t_{j}^{kn}\)和\(t_{i}^{kn}\)之间的关系，这也符合应得的结果。
+                              $$
+                                t_{i}^{kn}+\tau_{ij}-M \leq t_{j}^{kn}
+                              $$
+                            </p>
+                          </span>
+                        </ExpandCard></li>
                     <li>
                       <ExpandCard :initial_show="false" title_size="body-1" text_color="blue--text">
-                          <span slot="title">既然将一个车场同时视作“起点”车场和“终点”车场，那这两个车场之间的运输时长和运输成本怎么定义？</span>
-                          <span slot="body">答：都是0,因为这两个车场实际上是具有相同空间位置的，所以在它们间运输起来不需要成本和时间。</span>
-                        </ExpandCard>一辆车外出服务客户后，要再次出发必须有一段时间的休整。</li>
+                          <span slot="title">一辆车外出服务客户后，要再次出发必须有一段时间的休整。</span>
+                          <span slot="body">
+                            $$
+                            t_{0^{-}}^{kn}+r_{k}(1-x_{0^{+}0^{-}}^{kn}) \leq t_{0^{+}}^{k(n+1)}, \quad \forall j\in C, k\in K, n\in N-\{|N|\}\\
+                            $$
+                          </span>
+                        </ExpandCard></li>
                   </ul>
                 </p>
 
-                <p class="mt-5 mx-5 multi-para">
+                <p class="mt-5 mx-5 single-para">
                   我们直接将以上6点要求对应的数学约束拼在一起，就可以得到完整的数学模型，如下所示：
                 </p>
                 <v-card-title class="caption pb-0 justify-center">
 
-                  公式显示：由<a href="https://www.mathjax.org/" style="text-decoration: none;border-bottom:1px solid">Mathjax2.7.9</a>提供tex公式的渲染。
+                  公式显示：由<a href="https://www.mathjax.org/" class="neat">Mathjax2.7.9</a>提供tex公式的渲染。
                 </v-card-title>
 
 
@@ -359,4 +410,10 @@ p.multi-para{
 div.dark{
   background-color: #1e1e1e;
 }
+
+a.neat{
+  text-decoration: none;
+  border-bottom:1px solid
+}
+
 </style>
