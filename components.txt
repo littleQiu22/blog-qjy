@@ -1,3 +1,27 @@
 toolbar: app dark
-btn: dark
-icon:mdi-xxx; mdi-email, mdi-heart  
+btn: dark outlined
+icon:mdi-xxx; mdi-email, mdi-heart
+app-bar: flat app
+bar-nav-icon
+navigation-drawer
+theme: themes:{}
+container:
+row:
+col:
+card:
+expansion-panel:
+layout:
+flex:
+menu:<v-btn slot="activator">
+dialog:<v-btn slot="activator">
+form
+	text-field: prepend-icon
+	textarea: prepend-icon
+menu:
+	text-field: slot="activator" rules=
+	date-picker
+snackbar:
+	span
+	v-btn
+class: hidden-xx-and-xx, <color> <color>--text, <property><direction>-<size> 
+style: border-left 
