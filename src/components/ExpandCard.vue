@@ -1,6 +1,6 @@
 <template>
     <div class="expand-card">
-        <v-card-title>
+        <v-card-title class="py-0">
             <h1 :class="[title_size,text_color]"><slot name="title">默认标题</slot></h1>
             <v-btn
             icon
